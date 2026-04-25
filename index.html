@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hello</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Parameters ─────────────────────────────────── */
+    /* Update BACKEND_URL in the <script> block below   */
+    /* ─────────────────────────────────────────────── */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:    #1a1714;
+      --paper:  #f5f2ec;
+      --muted:  #8a8070;
+      --accent: #c4622d;
+      --line:   rgba(26,23,20,0.12);
+      --radius: 4px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: 'DM Mono', monospace;
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.75;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Layout ─────────────────────────────────────── */
+    .wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      width: 100%;
+    }
+
+    /* ── Nav ─────────────────────────────────────────── */
+    nav {
+      border-bottom: 1px solid var(--line);
+      padding: 1.5rem 0;
+    }
+    nav .wrap {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .nav-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      letter-spacing: 0.01em;
+    }
+    .nav-link {
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: var(--accent); }
+
+    /* ── Hero ────────────────────────────────────────── */
+    .hero {
+      padding: 6rem 0 5rem;
+      border-bottom: 1px solid var(--line);
+    }
+    .hero-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2.8rem, 6vw, 4.2rem);
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.75rem;
+    }
+    .hero h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+    .hero-body {
+      color: var(--muted);
+      max-width: 440px;
+      line-height: 1.85;
+    }
+    .hero-cta {
+      margin-top: 2.5rem;
+    }
+    .btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--ink); color: var(--paper); }
+
+    /* ── About strip ─────────────────────────────────── */
+    .about {
+      padding: 4rem 0;
+      border-bottom: 1px solid var(--line);
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .about-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 0.2rem;
+    }
+    .about-text { color: var(--ink); }
+
+    /* ── Contact form ────────────────────────────────── */
+    .contact {
+      padding: 4rem 0 6rem;
+    }
+    .contact-header {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 3rem;
+      align-items: start;
+      margin-bottom: 2.5rem;
+    }
+    .contact-label {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-top: 0.2rem;
+    }
+    .contact-intro { color: var(--muted); font-size: 14px; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .field {
+      border: 1px solid var(--line);
+      margin: -1px -1px 0 0;
+      padding: 1rem 1.25rem 0.85rem;
+      position: relative;
+    }
+    .field.full { grid-column: 1 / -1; }
+    .field label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.35rem;
+    }
+    .field input,
+    .field textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      font-weight: 300;
+      color: var(--ink);
+      resize: none;
+    }
+    .field textarea { min-height: 100px; }
+    .field input::placeholder,
+    .field textarea::placeholder { color: var(--muted); opacity: 0.6; }
+    .field:focus-within { border-color: var(--accent); z-index: 1; }
+
+    .form-footer {
+      border: 1px solid var(--line);
+      border-top: none;
+      padding: 1rem 1.25rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 1rem;
+    }
+    #form-status {
+      font-size: 13px;
+      color: var(--muted);
+      min-height: 1em;
+    }
+    #form-status.ok  { color: #3a7d44; }
+    #form-status.err { color: #b53a2f; }
+
+    .btn-submit {
+      padding: 0.6rem 1.4rem;
+      background: var(--ink);
+      color: var(--paper);
+      border: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .btn-submit:hover   { background: var(--accent); }
+    .btn-submit:disabled { opacity: 0.45; cursor: default; }
+
+    /* ── Footer ──────────────────────────────────────── */
+    footer {
+      margin-top: auto;
+      border-top: 1px solid var(--line);
+      padding: 1.5rem 0;
+    }
+    footer .wrap {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    @media (max-width: 520px) {
+      .about, .contact-header { grid-template-columns: 1fr; gap: 1rem; }
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="wrap">
+      <span class="nav-name">Your Name</span>
+      <a class="nav-link" href="#contact">Get in touch &darr;</a>
+    </div>
+  </nav>
+
+  <main>
+    <section class="hero">
+      <div class="wrap">
+        <p class="hero-eyebrow">Based in Sydney, AU</p>
+        <h1>Hello,<br />I'm <em>Lance&nbsp;Abel.</em></h1>
+        <p class="hero-body">
+          Mucking around with website development for a friend.
+        </p>
+        <div class="hero-cta">
+          <a class="btn" href="#contact">Say hello</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="about">
+      <div class="wrap" style="display:contents">
+        <p class="about-label">About</p>
+        <p class="about-text">
+          Lots of little AI + agent programs.
+        </p>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="wrap">
+        <div class="contact-header">
+          <p class="contact-label">Contact</p>
+          <p class="contact-intro">Fill in the form and I'll get back to you.</p>
+        </div>
+
+        <div class="form-grid" id="contact-form">
+          <div class="field">
+            <label for="f-name">Name</label>
+            <input id="f-name" type="text" placeholder="Jane Smith" autocomplete="name" />
+          </div>
+          <div class="field">
+            <label for="f-email">Email</label>
+            <input id="f-email" type="email" placeholder="jane@example.com" autocomplete="email" />
+          </div>
+          <div class="field">
+            <label for="f-age">Age</label>
+            <input id="f-age" type="number" placeholder="30" min="1" max="120" />
+          </div>
+          <div class="field" style="border-left:none"><!-- spacer --></div>
+          <div class="field full">
+            <label for="f-message">Message</label>
+            <textarea id="f-message" placeholder="What's on your mind?"></textarea>
+          </div>
+        </div>
+
+        <div class="form-footer">
+          <span id="form-status"></span>
+          <button class="btn-submit" id="btn-submit">Send &rarr;</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>Your Name</span>
+      <span id="footer-year"></span>
+    </div>
+  </footer>
+
+  <script>
+    // ── Parameters ──────────────────────────────────────────────────────────
+    const BACKEND_URL = "http://localhost:5000/submit";   // swap when deployed
+    // ────────────────────────────────────────────────────────────────────────
+
+    document.getElementById("footer-year").textContent = new Date().getFullYear();
+
+    const btn    = document.getElementById("btn-submit");
+    const status = document.getElementById("form-status");
+
+    function setStatus(msg, cls) {
+      status.textContent = msg;
+      status.className   = cls || "";
+    }
+
+    btn.addEventListener("click", async () => {
+      const name    = document.getElementById("f-name").value.trim();
+      const email   = document.getElementById("f-email").value.trim();
+      const age     = document.getElementById("f-age").value.trim();
+      const message = document.getElementById("f-message").value.trim();
+
+      if (!name || !email || !message) {
+        setStatus("Name, email and message are required.", "err");
+        return;
+      }
+
+      btn.disabled = true;
+      setStatus("Sending…");
+
+      try {
+        const res = await fetch(BACKEND_URL, {
+          method:  "POST",
+          headers: { "Content-Type": "application/json" },
+          body:    JSON.stringify({ name, email, age, message })
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          setStatus("Message sent — thanks!", "ok");
+          ["f-name","f-email","f-age","f-message"].forEach(id => {
+            document.getElementById(id).value = "";
+          });
+        } else {
+          const errs = Array.isArray(data.errors) ? data.errors.join(" ") : "Something went wrong.";
+          setStatus(errs, "err");
+          btn.disabled = false;
+        }
+      } catch {
+        setStatus("Could not reach the server.", "err");
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
